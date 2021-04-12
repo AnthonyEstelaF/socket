@@ -5,7 +5,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { SocketService } from './socket.service';
 import { CesarService } from './cesar.service';
 
-const config: SocketIoConfig = { url: 'https://3000-beige-fly-ot5ig27r.ws-eu03.gitpod.io', options: {} };
+const config: SocketIoConfig = { url: 'https://3000-aquamarine-crane-uajet9in.ws-eu03.gitpod.io', options: {} };
 
 @NgModule({
   declarations: [

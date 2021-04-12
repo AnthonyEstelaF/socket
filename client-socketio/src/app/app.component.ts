@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { SocketService } from './socket.service';
+import { CesarService } from './cesar.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +10,9 @@ import { SocketService } from './socket.service';
 })
 export class AppComponent {
   messageList:  string[] = [];
-  cesarService: any;
+  obs: Observable<unknown>;
 
-  constructor(private socketService: SocketService) {
+  constructor(private socketService: SocketService, private cesarService: CesarService) {
   }
 
    sendMessage(message: HTMLInputElement) {
@@ -19,11 +21,13 @@ export class AppComponent {
     //console.log("sent: " + message.value)
     message.value="";
   }
+  getMessage(message)
+  {
+    let encoded=this.cesarService.decode(message,10);
+    this.messageList.push(encoded);
+  }
   ngOnInit() {
-    this.socketService.getMessage()
-      .subscribe((message: string) => {
-        this.messageList.push(message);
-        console.log("messagereceived: " + message)
-      });
+   this.obs=this.socketService.getMessage();
+   this.obs.subscribe(this.getMessage);
   }
 }
