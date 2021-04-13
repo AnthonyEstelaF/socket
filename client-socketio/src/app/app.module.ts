@@ -5,7 +5,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { SocketService } from './socket.service';
 import { CesarService } from './cesar.service';
 
-const config: SocketIoConfig = { url: 'https://3000-aquamarine-crane-uajet9in.ws-eu03.gitpod.io', options: {} };
+const config: SocketIoConfig = { url: 'https://3000-aquamarine-pig-c35glc06.ws-eu03.gitpod.io', options: {} };
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ const config: SocketIoConfig = { url: 'https://3000-aquamarine-crane-uajet9in.ws
     BrowserModule,
     SocketIoModule.forRoot(config),
   ],
-  providers: [SocketService,SocketService, CesarService],
+  providers: [SocketService, CesarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

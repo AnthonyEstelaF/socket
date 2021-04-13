@@ -12,22 +12,22 @@ export class AppComponent {
   messageList:  string[] = [];
   obs: Observable<unknown>;
 
-  constructor(private socketService: SocketService, private cesarService: CesarService) {
-  }
+  constructor(private socketService: SocketService, private cesarService: CesarService) {}
 
    sendMessage(message: HTMLInputElement) {
-    let encoded = this.cesarService.encode(message.value, 10);
+    let encoded = this.cesarService.encode(message.value, 7);
     this.socketService.sendMessage(encoded);
-    //console.log("sent: " + message.value)
-    message.value="";
+
+    console.log("sent: " + encoded);
+    message.value = "";
+
   }
-  getMessage(message)
-  {
-    let encoded=this.cesarService.decode(message,10);
-    this.messageList.push(encoded);
-  }
+
   ngOnInit() {
-   this.obs=this.socketService.getMessage();
-   this.obs.subscribe(this.getMessage);
+    this.socketService.getMessage().subscribe((message: string) => {
+      let decoded = this.cesarService.decode(message, 7)
+      this.messageList.push(decoded);
+      console.log("message received:", decoded)
+    });
   }
 }
