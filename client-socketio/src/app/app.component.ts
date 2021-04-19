@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { SocketService } from './socket.service';
 import { CesarService } from './cesar.service';
 import { Observable } from 'rxjs';
-
+import {FormData} from './form.data.model';
+import { CryptoService } from './crypto.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,16 +12,33 @@ import { Observable } from 'rxjs';
 export class AppComponent {
   messageList:  string[] = [];
   obs: Observable<unknown>;
+  offset: string;
+  message:string;
 
-  constructor(private socketService: SocketService, private cesarService: CesarService) {}
+  constructor(private socketService: SocketService, private cesarService: CesarService, private cryptoService: CryptoService) {}
+    setEncryptionKey(encryptionKey:HTMLInputElement)
+    {
+      this.offset=encryptionKey.value;
+    }
+    sendMessage(formData: FormData) {
 
-   sendMessage(message: HTMLInputElement) {
-    let encoded = this.cesarService.encode(message.value, 7);
-    this.socketService.sendMessage(encoded);
+    console.log("form input: " + JSON.stringify(formData));
 
-    console.log("sent: " + encoded);
-    message.value = "";
+    let encoded: FormData = formData; //Preparo una variabile da criptare
+    switch (formData.messageType) {
+      //Se il tipo di messaggio è cesar allora cripto con cesarService
+      case "cesar":
+        encoded.message = this.cesarService.encode(formData.message, Number(this.offset));
+        break;
+      //Se il tipo di messaggio è t-des allora cripto con cryptoService.encodeDes
+      case "t-des":
+        encoded.message = this.cryptoService.encodeDes(formData.message, this.offset);
+        break;
+    }
+    //Invio il messaggio cifrato
+    this.socketService.sendMessage(JSON.stringify(encoded));
 
+    this.message = "";
   }
 
   ngOnInit() {

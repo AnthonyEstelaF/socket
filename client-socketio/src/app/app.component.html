@@ -4,3 +4,31 @@
 <div *ngFor = "let message of messageList">
   {{message}}
 </div>
+<div>
+    <input (keyup)="$event.keyCode == 13 && setEncryptionKey(encKey)" #encKey />
+    <button (click)="setEncryptionKey(encKey)">Set Encryption Key</button>
+    ecryption key: {{offset}}
+</div>
+<hr>
+<form #myForm="ngForm" (submit)="sendMessage(myForm.value)" novalidate>
+    <div>
+       <input id="cesar" type="radio" value="cesar" name="messageType" ngModel>
+       <label  for="cesar">Cesar</label>
+    </div>
+
+    <div>
+       <input id="t-des" type="radio" value="t-des" name="messageType" ngModel>
+       <label for="t-des">Triple Des</label>
+    </div>
+
+    <input type="text" id="message"  [(ngModel)]="message" name="message">
+
+    <button type="submit" >Encrypt</button>
+ </form><!-- Form ends -->
+
+ <hr>
+
+<div *ngFor="let message of messageList">
+    {{message}}
+</div>
+
